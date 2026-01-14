@@ -1,0 +1,18 @@
+John Doe
+Software Engineer
+Email: john.doe@example.com
+Phone: +1-555-0102
+
+Summary:
+Experienced Software Engineer with 5 years of experience in Python and Cloud Computing.
+
+Experience:
+Software Developer at Tech Corp (2020-Present)
+- Developed backend services using FastAPI.
+- Managed cloud infrastructure on AWS.
+
+Education:
+B.S. Computer Science, University of Technology (2016-2020)
+
+Skills:
+Python, Docker, SQL, AWS

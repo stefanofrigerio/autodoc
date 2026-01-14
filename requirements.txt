@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+google-cloud-aiplatform
+python-dotenv
+pyiceberg[sql-catalog,duckdb]
+sqlalchemy
+pyarrow

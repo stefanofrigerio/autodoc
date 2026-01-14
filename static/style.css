@@ -1,0 +1,961 @@
+:root {
+    --primary: #C21B17;
+    /* Generali Red */
+    --primary-hover: #A01511;
+    --secondary: #333333;
+    --background: #f4f4f4;
+    --surface: #ffffff;
+    --surface-transparent: rgba(255, 255, 255, 0.9);
+    --text: #333333;
+    --text-muted: #666666;
+    --border: #e0e0e0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius-lg: 8px;
+    --radius-md: 4px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* Remove Background Globs */
+.background-glob {
+    display: none;
+}
+
+.glob-2 {
+    display: none;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, 30px);
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    box-shadow: var(--shadow);
+    /* Full width styling requires breaking out of container or restructuring. 
+       For now, we'll style the header container inside but maybe full width?
+       Let's assume the user wants the header bar at the top of the 'page'.
+       But our HTML structure puts header inside .container. 
+       We will style it to look good within layout or suggest moving it out.
+       Given the constraint, we'll make it a card-like header or just simple bar.
+    */
+    border-radius: var(--radius-lg);
+    justify-content: flex-start;
+    text-align: left;
+}
+
+/* Better approach: Move header background to a pseudo element or change container strategy?
+   Let's keep it simple for now and style the header block itself. */
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    background: none;
+    margin-bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo i,
+.logo svg {
+    /* Logo Icon styles */
+    fill: white;
+    color: white;
+    background: none;
+    height: 40px;
+    width: auto;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-left: auto;
+    /* Push to right */
+    display: none;
+    /* Hide subtitle for cleaner look based on screen shot? Or keep it? Screenshot shows just logo and title 'ComeNoi'. Let's keep it minimal. */
+}
+
+@media (min-width: 768px) {
+    .subtitle {
+        display: block;
+    }
+}
+
+/* Upload Area */
+.upload-container {
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-container:hover,
+.upload-container.drag-active {
+    border-color: var(--primary);
+    background: rgba(194, 27, 23, 0.05);
+    /* Red tint */
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.upload-container:hover .upload-icon {
+    transform: translateY(-5px);
+    color: var(--primary);
+}
+
+.upload-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.highlight {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.file-types {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* File Preview */
+.file-preview {
+    display: none;
+    align-items: center;
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    animation: fadeIn 0.3s ease;
+}
+
+.upload-container.has-file .upload-content {
+    display: none;
+}
+
+.upload-container.has-file .file-preview {
+    display: flex;
+}
+
+.file-icon {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-right: 1rem;
+}
+
+.file-info {
+    text-align: left;
+    flex: 1;
+}
+
+.file-name {
+    display: block;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.file-size {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.remove-file {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+
+.remove-file:hover {
+    color: var(--danger);
+}
+
+/* Button */
+.primary-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    box-shadow: 0 4px 6px rgba(194, 27, 23, 0.2);
+}
+
+.primary-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--primary-hover);
+    box-shadow: 0 6px 12px rgba(194, 27, 23, 0.3);
+}
+
+.primary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #e0e0e0;
+    color: #999;
+    box-shadow: none;
+}
+
+/* Loader */
+.loader-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 0;
+}
+
+.scanner {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    max-width: 300px;
+    margin-bottom: 1rem;
+}
+
+.scanner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    animation: scan 1.5s infinite linear;
+}
+
+@keyframes scan {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(300%);
+    }
+}
+
+/* Results Section */
+.results-container {
+    display: none;
+    margin-top: 3rem;
+    animation: slideUp 0.5s ease;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.badge {
+    background: rgba(194, 27, 23, 0.1);
+    color: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(194, 27, 23, 0.2);
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    grid-template-areas:
+        "summary summary summary"
+        "sentiment language keywords"
+        "entities entities entities";
+}
+
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "summary"
+            "sentiment"
+            "language"
+            "keywords"
+            "entities";
+    }
+}
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+/* Specific Card Layouts */
+.summary-card {
+    grid-area: summary;
+}
+
+.sentiment-card {
+    grid-area: sentiment;
+}
+
+.language-card {
+    grid-area: language;
+}
+
+.keywords-card {
+    grid-area: keywords;
+}
+
+.entities-card {
+    grid-area: entities;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.card-header i {
+    color: var(--primary);
+}
+
+.card-body p {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+}
+
+/* Sentiment Indicator */
+.sentiment-indicator {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    background: #f0f0f0;
+}
+
+.sentiment-Positive {
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.sentiment-Negative {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.sentiment-Neutral {
+    color: var(--text-muted);
+    background: #e0e0e0;
+}
+
+.sentiment-Mixed {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+/* Tags */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: rgba(194, 27, 23, 0.05);
+    /* Red tint */
+    color: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(194, 27, 23, 0.2);
+}
+
+/* Entities List */
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.entity-item {
+    background: #f0f0f0;
+    color: var(--secondary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: 1px solid #ddd;
+}
+
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 3rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* CV Specific Styles */
+
+.cv-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    grid-template-areas:
+        "profile profile"
+        "experience skills"
+        "experience education";
+}
+
+@media (max-width: 768px) {
+    .cv-grid-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "profile"
+            "skills"
+            "experience"
+            "education";
+    }
+}
+
+.profile-card {
+    grid-area: profile;
+}
+
+.skills-card {
+    grid-area: skills;
+}
+
+.experience-card {
+    grid-area: experience;
+}
+
+.education-card {
+    grid-area: education;
+}
+
+.profile-details {
+    padding: 0.5rem;
+}
+
+.profile-details h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.contact-info {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.contact-info p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.contact-info i {
+    margin-right: 0.5rem;
+    color: var(--secondary);
+}
+
+.summary-section h4 {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.summary-section p {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+/* Timeline Styles */
+.timeline {
+    list-style: none;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: var(--border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -1.95rem;
+    top: 0.3rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--secondary);
+    border: 3px solid var(--surface);
+}
+
+.timeline-content h4 {
+    color: var(--text);
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.timeline-date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.timeline-company,
+.timeline-school {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+.timeline-content p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Error State */
+.error-container {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-card {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.error-header i {
+    color: var(--danger);
+}
+
+.error-text {
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+/* Tabs Navigation */
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Warehouse Styles */
+.warehouse-toolbar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-bar {
+    flex: 1;
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: border-color 0.2s;
+}
+
+.search-bar:focus-within {
+    border-color: var(--primary);
+}
+
+.search-bar i {
+    color: var(--text-muted);
+}
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+}
+
+.icon-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.1rem;
+}
+
+.icon-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.warehouse-container {
+    background: var(--surface-transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    min-height: 400px;
+    padding: 1rem;
+}
+
+.cv-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cv-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    /* In case we make it a link */
+}
+
+.cv-item:hover {
+    transform: translateX(5px);
+    border-color: var(--primary);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.cv-item-info h4 {
+    color: var(--text);
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.cv-item-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cv-filename {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+.cv-actions {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn-sm {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.icon-btn-sm:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.detail-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--border);
+}
+
+/* Smart Search Styles */
+.smart-search-container {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.smart-search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.smart-search-box:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(194, 27, 23, 0.1);
+}
+
+.smart-search-box textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: #f9f9f9;
+    color: var(--text);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.smart-search-box textarea:focus {
+    background: #ffffff;
+    border-color: var(--primary);
+}
+
+.ai-btn {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--primary) 0%, #ff4b4b 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(194, 27, 23, 0.2);
+}
+
+.ai-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(194, 27, 23, 0.3);
+}
+
+.ai-btn i {
+    font-size: 1.1rem;
+}
+
+/* Match Rate Badge for Smart Search Results */
+.match-badge {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: var(--success);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

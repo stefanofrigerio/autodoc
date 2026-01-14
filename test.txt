@@ -1,0 +1,4 @@
+This is a test document.
+It talks about Artificial Intelligence and its impact on society.
+The sentiment is generally positive but cautious.
+Gemini should be able to extract this.

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Warehouse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="background-glob"></div>
+    <div class="background-glob glob-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="/static/generali_logo.png" alt="Generali Logo" style="height: 60px; width: auto;">
+                <span>database documentale</span>
+            </div>
+            <!-- Subtitle hidden in mobile but kept for semantics/desktop if needed -->
+            <!-- <p class="subtitle">Generali Internal Portal</p> -->
+        </header>
+
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="upload">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+            </button>
+            <button class="tab-btn" data-tab="warehouse">
+                <i class="fa-solid fa-database"></i> Warehouse
+            </button>
+        </nav>
+
+        <main>
+            <!-- Upload Tab -->
+            <div id="upload-tab-content" class="tab-content active">
+                <div class="upload-container" id="upload-area">
+                    <input type="file" id="file-input" hidden accept=".pdf,.txt,.md,.json">
+                    <div class="upload-content">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h3>Upload your document</h3>
+                        <p>Drag & Drop or <span class="highlight">Browse</span></p>
+                        <p class="file-types">Supports PDF, TXT, MD, JSON</p>
+                    </div>
+                    <div class="file-preview" id="file-preview">
+                        <i class="fa-solid fa-file-lines file-icon"></i>
+                        <div class="file-info">
+                            <span class="file-name">document.pdf</span>
+                            <span class="file-size">1.2 MB</span>
+                        </div>
+                        <button class="remove-file" id="remove-file"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+
+                <button id="analyze-btn" class="primary-btn" disabled>
+                    <span>Analyze Document</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+
+                <div class="loader-container" id="loader">
+                    <div class="scanner"></div>
+                    <p>Analyzing content with Gemini AI...</p>
+                </div>
+
+                <div class="results-container" id="results">
+                    <div class="results-header">
+                        <h2>Analysis Results</h2>
+                        <span class="badge" id="model-badge">Gemini 2.5 Flash</span>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="error-state" class="error-container" style="display: none;">
+                        <div class="card error-card">
+                            <div class="card-header error-header">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <h3>Document Rejected</h3>
+                            </div>
+                            <div class="card-body">
+                                <p id="rejection-reason" class="error-text">Reason for rejection...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CV Content -->
+                    <div id="cv-content" class="cv-grid-layout">
+                        <!-- Profile Card -->
+                        <div class="card profile-card">
+                            <div class="card-header">
+                                <i class="fa-solid fa-user"></i>
+                                <h3>Candidate Profile</h3>
+                            </div>
+                            <div class="profile-details">
+                                <h2 id="cv-name">Candidate Name</h2>
+                                <div class="contact-info">
+                                    <p><i class="fa-solid fa-envelope"></i> <span id="cv-email">email@example.com</span>
+                                    </p>
+                                    <p><i class="fa-solid fa-phone"></i> <span id="cv-phone">+1234567890</span></p>
+                                </div>
+                                <div class="summary-section">
+                                    <h4>Professional Summary</h4>
+                                    <p id="cv-summary">Summary text...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Card -->
+                        <div class="card skills-card">
+                            <div class="card-header">
+                                <i class="fa-solid fa-microchip"></i>
+                                <h3>Skills & Technologies</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="tags-container" id="cv-skills">
+                                    <!-- Tags injected via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Experience Card -->
+                        <div class="card experience-card">
+                            <div class="card-header">
+                                <i class="fa-solid fa-briefcase"></i>
+                                <h3>Work Experience</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="timeline" id="cv-experience">
+                                    <!-- Experience items injected via JS -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Education Card -->
+                        <div class="card education-card">
+                            <div class="card-header">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <h3>Education</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="timeline" id="cv-education">
+                                    <!-- Education items injected via JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warehouse Tab -->
+            <div id="warehouse-tab-content" class="tab-content">
+                <div class="warehouse-toolbar">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="warehouse-search" placeholder="Search by name, surname, or file...">
+                    </div>
+                    <button id="refresh-warehouse" class="icon-btn" title="Refresh"><i
+                            class="fa-solid fa-rotate-right"></i></button>
+                </div>
+
+                <!-- Smart Search Section -->
+                <div class="smart-search-container">
+                    <div class="smart-search-box">
+                        <textarea id="smart-search-input"
+                            placeholder="Ask AI: 'I need a senior machine learning engineer who also knows HTML...'"></textarea>
+                        <button id="smart-search-btn" class="ai-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI
+                        </button>
+                    </div>
+                </div>
+
+                <div class="warehouse-container">
+                    <div class="cv-list" id="cv-list">
+                        <!-- CV items will be injected here -->
+                        <div class="empty-state">
+                            <i class="fa-solid fa-box-open"></i>
+                            <p>No CVs found in the warehouse.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Generali. Internal Use Only.</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
